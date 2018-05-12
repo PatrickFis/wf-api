@@ -3,16 +3,11 @@ package com.patrick.library.books;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.event.Event;
-import javax.inject.Inject;
 import javax.inject.Named;
 
-import com.patrick.library.cdi.BookAdded;
 import com.patrick.library.interfaces.Book;
 import com.patrick.library.interfaces.LibraryInventory;
 
@@ -20,7 +15,6 @@ import com.patrick.library.interfaces.LibraryInventory;
 @ApplicationScoped
 public class LibraryInventoryImpl implements LibraryInventory, Serializable {
 	private static final long serialVersionUID = 1L;
-	private static final Logger logger = Logger.getLogger("library");
 	
 	private List<Book> allBooks = new ArrayList<>();
 	

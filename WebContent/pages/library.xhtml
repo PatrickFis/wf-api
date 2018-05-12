@@ -27,16 +27,36 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
     <ui:composition template="navbar.xhtml">
-        <ui:define name="title">Home Page</ui:define>
+        <ui:define name="title">Library</ui:define>
         <ui:define name="content">
             <div class="ui-grid ui-grid-responsive">
                 <div class="ui-grid-row">
-                    <div class="ui-grid-col-2" id="leftCol">
-                    	<h2>Some content in the lefthand column.</h2>
+                    <div class="ui-grid-col-12" id="center">
+                    	<p:dataTable id="allTheBooks" var="book" value="#{libraryBean.getLibraryBooks()}">
+                    		<p:column headerText="Id">
+                    			<h:outputText value="#{book.bookId}" />
+                    		</p:column>
+                    		
+                    		<p:column headerText="Title">
+                    			<h:outputText value="#{book.title}" />
+                    		</p:column>
+                    		
+                    		<p:column headerText="Checked Out?">
+                    			<h:outputText value="#{book.checkedOut}" />
+                    		</p:column>
+                    	</p:dataTable>
                     </div>
-                    <div class="ui-grid-col-8" id="rightCol">
-                    	<h2>#{homeBean.home}</h2>
-                    </div>
+                </div>
+                
+                <div class="ui-grid-row">
+                	<div class="ui-grid-col-4">
+                		<h:form>
+	                		<p:inputText id="bookId" value="#{libraryBean.bookId}" />
+	                		<p:inputText id="bookName" value="#{libraryBean.bookName}" />
+	                		<p:inputText id="bookCheckedOut" value="#{libraryBean.bookCheckedOut}" />
+	                		<p:commandButton value="Add Book!" id="addBookBtn" action="#{libraryBean.addBook()}" update="allTheBooks" />
+                		</h:form>
+                	</div>
                 </div>
             </div>
         </ui:define>

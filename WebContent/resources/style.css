@@ -1,0 +1,31 @@
+@charset "ISO-8859-1";
+
+.ui-layout-pane {
+	border: 0;
+	overflow: hidden;
+}
+
+.ui-layout-unit {
+	border: 0;
+	overflow: hidden;
+}
+
+.ui-layout-unit-content {
+	border: 0;
+	overflow: hidden;
+}
+
+.ui-widget {
+	border: 0;
+	overflow: hidden;
+}
+
+.ui-widget-content {
+	border: 0;
+	overflow: hidden;
+}
+
+.ui-layout-unit-content {
+	border: 0;
+	overflow: hidden;
+}

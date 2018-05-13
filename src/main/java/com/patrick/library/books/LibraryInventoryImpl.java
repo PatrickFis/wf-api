@@ -29,10 +29,11 @@ public class LibraryInventoryImpl implements LibraryInventory, Serializable {
 	}
 
 	@Override
-	public void checkOutBook(String bookId) {
+	public void checkOutBook(String bookId, String owner) {
 		for(Book b: this.allBooks) {
 			if(b.getBookId().equals(bookId)) {
 				b.checkout();
+				b.setOwner(owner);
 			}
 		}
 		
@@ -50,10 +51,10 @@ public class LibraryInventoryImpl implements LibraryInventory, Serializable {
 	
 	@Override
 	public void generateDefaultData() {
-		Book a = new BookImpl("1", "Harry Potter", false);
-		Book b = new BookImpl("2", "Earagon", false);
-		Book c = new BookImpl("3", "Stephen King", false);
-		Book d = new BookImpl("4", "Test Book!!!111one", false);
+		Book a = new BookImpl("1", "Harry Potter", "It's about a wizard", false);
+		Book b = new BookImpl("2", "Earagon", "Dragons. There be dragons.", false);
+		Book c = new BookImpl("3", "Stephen King", "Horror.", false);
+		Book d = new BookImpl("4", "Test Book!!!111one", "!test!", false);
 		
 		this.allBooks.add(a);
 		this.allBooks.add(b);

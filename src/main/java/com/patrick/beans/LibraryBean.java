@@ -27,6 +27,7 @@ public class LibraryBean implements Serializable {
 	
 	private String bookId;
 	private String bookName;
+	private String info;
 	private String bookCheckedOut;
 
 	@Inject
@@ -68,7 +69,15 @@ public class LibraryBean implements Serializable {
 	public void setBookName(String bookName) {
 		this.bookName = bookName;
 	}
-
+	
+	public String getInfo() {
+		return this.info;
+	}
+	
+	public void setInfo(String info) {
+		this.info = info;
+	}
+	
 	public String getBookCheckedOut() {
 		return bookCheckedOut;
 	}
@@ -85,7 +94,7 @@ public class LibraryBean implements Serializable {
 			checkedOut = false;
 		}
 		
-		Book book = new BookImpl(this.bookId, this.bookName, checkedOut);
+		Book book = new BookImpl(this.bookId, this.bookName, this.info, checkedOut);
 		library.addBook(book);
 		bookAdded.fire(book);
 	}

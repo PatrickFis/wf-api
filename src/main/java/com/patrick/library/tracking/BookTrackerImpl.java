@@ -29,7 +29,17 @@ public class BookTrackerImpl implements BookTracker, Serializable {
 	public Date getDueDate(Book book) {
 		return this.bookDueDates.get(book);
 	}
-
+	
+	@Override
+	public Map<Book, Date> getDueDates() {
+		return this.bookDueDates;
+	}
+	
+	@Override
+	public Map<Book, String> getBookOwners() {
+		return this.bookOwners;
+	}
+	
 	@Override
 	public List<Book> getOverdueBooks() {
 		List<Book> overdueBooks = new ArrayList<>();

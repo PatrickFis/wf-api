@@ -1,4 +1,4 @@
-package com.patrick.beans;
+package com.patrick.library.beans;
 
 import java.io.Serializable;
 import java.util.List;

@@ -27,7 +27,8 @@
                     				<p:commandButton value="Remove from cart" id="removeFromCartBtn" action="#{cartImpl.removeProductFromCart(cartProduct)}" update="myCart cart" />
                     			</p:column>
                     		</p:dataTable>
-                    		<h:outputText id="totalPrice" value="#{processCheckoutBean.totalPrice}" />
+                    		<br />
+                    		<h:outputText id="totalPrice" value="Total price: $#{processCheckoutBean.totalPrice}" />
                     	</h:form>
                     </div>
 				</div>

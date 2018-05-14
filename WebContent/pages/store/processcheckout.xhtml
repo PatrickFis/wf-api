@@ -29,7 +29,35 @@
                     		</p:dataTable>
                     		<br />
                     		<h:outputText id="totalPrice" value="Total price: $#{processCheckoutBean.totalPrice}" />
-                    	</h:form>
+                    		<br />
+                    		<p:commandButton oncomplete="PF('checkoutDialog').show()" value="Finish Checkout">
+	                    		<!-- <f:setPropertyActionListener value="#{processCheckoutBean.productsInCart}" target="" /> -->
+	                    	</p:commandButton>
+	                    	</h:form>
+	                    	<!-- See 
+		                    https://github.com/primefaces/primeng/issues/276 and
+		                    https://stackoverflow.com/questions/8970685/modal-confirmdialog-over-modal-dialog-everything-is-blocked
+		                    for the appendTo bit. -->
+		                    <p:dialog header="Finish Checkout" widgetVar="checkoutDialog" modal="false" showEffect="fade" hideEffect="fade" resizable="false" appendTo="@(body)">
+			                	<h:form id="checkoutModal">
+			                    	<p:outputPanel id="finishCheckout" style="text-align:center;">
+			                    		<p:panelGrid columns="2" columnClasses="label,value">
+			                    			<h:outputText value="Total Price:" />
+			                    			<h:outputText value="#{processCheckoutBean.totalPrice}" />
+			                    			
+			                    			<h:outputText value="Name: " />
+			                    			<p:inputText value="#{processCheckoutBean.customerName}" />
+			                    			
+			                    			<h:outputText value="Address: " />
+			                    			<p:inputText value="#{processCheckoutBean.customerAddress}" />
+			                    			
+			                    			<h:outputText value="Finish Purchase" />
+			                    			<p:commandButton value="Submit" icon="ui-icon-check" action="#{processCheckoutBean.submitPurchase()}" oncomplete="PF('checkoutDialog').hide()" />
+			                    		</p:panelGrid>
+			                    	</p:outputPanel>
+		                    	</h:form>
+		                    </p:dialog>
+                
                     </div>
 				</div>
 			</div>

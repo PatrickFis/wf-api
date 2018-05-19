@@ -4,7 +4,10 @@ import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
+import javax.interceptor.Interceptors;
 
+import com.patrick.store.cdi.InterceptedMethod;
+import com.patrick.store.cdi.MethodInterceptor;
 import com.patrick.store.interfaces.Inventory;
 import com.patrick.store.interfaces.Product;
 import com.patrick.store.product.ProductImpl;
@@ -12,11 +15,13 @@ import com.patrick.store.product.ProductImplAlternative;
 
 @Startup
 @Singleton
+@Interceptors(MethodInterceptor.class)
 public class InventoryDataGenerator {
 	@Inject
 	private Inventory inventory;
 	
 	@PostConstruct
+	@InterceptedMethod
 	public void init() {
 		Product p = new ProductImpl();
 		p.setDescription("Test product desc");

@@ -1,5 +1,6 @@
 package com.patrick.store.cdi;
 
+import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -8,13 +9,11 @@ import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 
 @Interceptor
-public class MethodInterceptor {
+public class MethodInterceptor implements Serializable {
 
-	private static final Logger logger = Logger.getLogger("methodInterceptor");
+	private static final long serialVersionUID = 1L;
 	
-	public MethodInterceptor() {
-		// TODO Auto-generated constructor stub
-	}
+	private static final Logger logger = Logger.getLogger("methodInterceptor");
 
 	@AroundInvoke
 	public Object aroundInvoke(InvocationContext ic) throws Exception {
@@ -22,7 +21,8 @@ public class MethodInterceptor {
 			logger.log(Level.INFO, "Method intercepted: {0}", ic.getMethod());
 			return ic.proceed();
 		}
+		logger.log(Level.INFO, "Method intercepted: {0}", ic.getMethod());
 		return ic.proceed();
 	}
 
-}
+} 

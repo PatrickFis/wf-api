@@ -6,13 +6,16 @@ import java.util.List;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.interceptor.Interceptors;
 
+import com.patrick.store.cdi.MethodInterceptor;
 import com.patrick.store.interfaces.Cart;
 import com.patrick.store.interfaces.Inventory;
 import com.patrick.store.interfaces.Product;
 
 @Named
 @ViewScoped
+@Interceptors(MethodInterceptor.class)
 public class StoreHomeBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String storeName = "Test Store";

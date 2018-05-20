@@ -6,10 +6,10 @@ import javax.ejb.Startup;
 import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 
-import com.patrick.store.cdi.InterceptedMethod;
 import com.patrick.store.cdi.MethodInterceptor;
 import com.patrick.store.interfaces.Inventory;
 import com.patrick.store.interfaces.Product;
+import com.patrick.store.noncdi.MonitoredMethod;
 import com.patrick.store.product.ProductImpl;
 import com.patrick.store.product.ProductImplAlternative;
 
@@ -21,7 +21,7 @@ public class InventoryDataGenerator {
 	private Inventory inventory;
 	
 	@PostConstruct
-	@InterceptedMethod
+	@MonitoredMethod
 	public void init() {
 		Product p = new ProductImpl();
 		p.setDescription("Test product desc");

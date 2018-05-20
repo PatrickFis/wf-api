@@ -12,6 +12,7 @@ import com.patrick.store.cdi.MethodInterceptor;
 import com.patrick.store.interfaces.Cart;
 import com.patrick.store.interfaces.Inventory;
 import com.patrick.store.interfaces.Product;
+import com.patrick.store.noncdi.MonitoredMethod;
 
 @Named
 @ViewScoped
@@ -36,6 +37,7 @@ public class StoreHomeBean implements Serializable {
 		return this.inventory.getAllProducts();
 	}
 	
+	@MonitoredMethod
 	public void addItemToCart(Product p) {
 		this.cart.addProductToCart(p);
 	}

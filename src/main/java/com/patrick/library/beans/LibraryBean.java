@@ -21,10 +21,6 @@ public class LibraryBean implements Serializable {
 	@Inject
 	private LibraryInventory library;
 	
-	private String libraryName;
-	
-	private String libraryAddress;
-	
 	private String bookId;
 	private String bookName;
 	private String info;
@@ -36,22 +32,6 @@ public class LibraryBean implements Serializable {
 	
 	public List<Book> getLibraryBooks() {
 		return library.getBooks();
-	}
-	
-	public String getLibraryName() {
-		return libraryName;
-	}
-
-	public void setLibraryName(String libraryName) {
-		this.libraryName = libraryName;
-	}
-
-	public String getLibraryAddress() {
-		return libraryAddress;
-	}
-
-	public void setLibraryAddress(String libraryAddress) {
-		this.libraryAddress = libraryAddress;
 	}
 	
 	public String getBookId() {

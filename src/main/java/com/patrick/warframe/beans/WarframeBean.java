@@ -20,6 +20,9 @@ import com.patrick.warframe.data.WarframeAlert;
 import com.patrick.warframe.data.WarframeEvent;
 import com.patrick.warframe.facade_interface.WarframeFacade;
 import com.patrick.warframe.weapons.WarframeWeapon;
+import com.patrick.warframe.wikiexports.WarframeGear;
+import com.patrick.warframe.wikiexports.WarframeResources;
+import com.patrick.warframe.wikiexports.WarframeUpgrades;
 
 @Named
 @SessionScoped
@@ -31,6 +34,9 @@ public class WarframeBean implements Serializable {
 	public Collection<WarframeEvent> events;
 	public Collection<WarframeAlert> alerts;
 	public Collection<WarframeWeapon> weapons;
+	private Collection<WarframeGear> gear;
+	private Collection<WarframeResources> resources;
+	private Collection<WarframeUpgrades> upgrades;
 	
 	@Inject
 	private WarframeFacade warframeFacade;
@@ -40,6 +46,9 @@ public class WarframeBean implements Serializable {
 		events = warframeFacade.getWarframeData();
 		alerts = warframeFacade.getWarframeAlerts();
 		weapons = warframeFacade.getWarframeWeapons();
+		gear = warframeFacade.getWarframeGear();
+		resources = warframeFacade.getWarframeResources();
+		upgrades = warframeFacade.getWarframeUpgrades();
 	}
 	
 	public Collection<WarframeEvent> getEvents() {
@@ -65,11 +74,39 @@ public class WarframeBean implements Serializable {
 		return gson.toJson(filterEvents());
 	}
 	
-	public String getAlertsPrettyPrent() {
+	public String getAlertsPrettyPrint() {
 		GsonBuilder builder = new GsonBuilder();
 		builder.setPrettyPrinting();
 		Gson gson = builder.create();
 		return gson.toJson(alerts);
+	}
+	
+	public String getWeaponsPrettyPrint() {
+		GsonBuilder builder = new GsonBuilder();
+		builder.setPrettyPrinting();
+		Gson gson = builder.create();
+		return gson.toJson(weapons);
+	}
+	
+	public String getGearPrettyPrint() {
+		GsonBuilder builder = new GsonBuilder();
+		builder.setPrettyPrinting();
+		Gson gson = builder.create();
+		return gson.toJson(gear);
+	}
+	
+	public String getResourcesPrettyPrint() {
+		GsonBuilder builder = new GsonBuilder();
+		builder.setPrettyPrinting();
+		Gson gson = builder.create();
+		return gson.toJson(resources);
+	}
+	
+	public String getUpgradesPrettyPrint() {
+		GsonBuilder builder = new GsonBuilder();
+		builder.setPrettyPrinting();
+		Gson gson = builder.create();
+		return gson.toJson(upgrades);
 	}
 	
 	private Collection<WarframeEvent> filterEvents() {

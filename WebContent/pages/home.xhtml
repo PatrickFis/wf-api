@@ -7,12 +7,34 @@
         <ui:define name="title">Home Page</ui:define>
         <ui:define name="content">
             <div class="ui-grid ui-grid-responsive">
+                <h2>Events</h2>
                 <div class="ui-grid-row">
                     <pre>#{warframeBean.eventsPrettyPrint}</pre>
                 </div>
                 
+                <h2>Alerts</h2>
                 <div class="ui-grid-row">
-					<pre>#{warframeBean.alertsPrettyPrent}</pre>
+					<pre>#{warframeBean.alertsPrettyPrint}</pre>
+				</div>
+				
+				<h2>Weapons</h2>
+                <div class="ui-grid-row">
+					<pre>#{warframeBean.weaponsPrettyPrint}</pre>
+				</div>
+				
+				<h2>Gear</h2>
+                <div class="ui-grid-row">
+					<pre>#{warframeBean.gearPrettyPrint}</pre>
+				</div>
+				
+				<h2>Resources</h2>
+                <div class="ui-grid-row">
+					<pre>#{warframeBean.resourcesPrettyPrint}</pre>
+				</div>
+				
+				<h2>Upgrades</h2>
+                <div class="ui-grid-row">
+					<pre>#{warframeBean.upgradesPrettyPrint}</pre>
 				</div>
             </div>
         </ui:define>

@@ -68,14 +68,14 @@ public class WarframeServiceImpl implements WarframeService, Serializable {
 
 	@Override
 	public Collection<WarframeResources> getWarframeResources() {
-		JsonElement elements = getResponseFromEndpoint(WarframeEndpoints.GEAR.getEndpoint());
+		JsonElement elements = getResponseFromEndpoint(WarframeEndpoints.RESOURCES.getEndpoint());
 		Collection<WarframeResources> resources = getResources(elements);
 		return resources;
 	}
 
 	@Override
 	public Collection<WarframeUpgrades> getWarframeUpgrades() {
-		JsonElement elements = getResponseFromEndpoint(WarframeEndpoints.GEAR.getEndpoint());
+		JsonElement elements = getResponseFromEndpoint(WarframeEndpoints.UPGRADES.getEndpoint());
 		Collection<WarframeUpgrades> upgrades = getUpgrades(elements);
 		return upgrades;
 	}
@@ -125,8 +125,9 @@ public class WarframeServiceImpl implements WarframeService, Serializable {
 //		GsonBuilder builder = new GsonBuilder();
 //		builder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeDeserializer());
 //		Gson gson = builder.create();
-		Type collectionType = new TypeToken<Collection<WarframeAlert>>() {}.getType();
+//		Type collectionType = new TypeToken<Collection<WarframeAlert>>() {}.getType();
 //		return gson.fromJson(element.getAsJsonObject().get("Alerts"), collectionType);
+		Type collectionType = new TypeToken<Collection<WarframeAlert>>() {}.getType();
 		Map<Class, JsonDeserializer> deserializers = new HashMap<>();
 		deserializers.put(LocalDateTime.class, new LocalDateTimeDeserializer());
 		return getCollectionFromJson(element, collectionType, "Alerts", deserializers);
@@ -139,22 +140,24 @@ public class WarframeServiceImpl implements WarframeService, Serializable {
 	}
 	
 	private Collection<WarframeGear> getGear(JsonElement element) {
-		// TODO Auto-generated method stub
-		return null;
+		Type collectionType = new TypeToken<Collection<WarframeGear>>() {}.getType();
+		return getCollectionFromJson(element, collectionType, "ExportGear", null);
 	}
 	
-	private Collection<WarframeResources> getResources(JsonElement elements) {
-		// TODO Auto-generated method stub
-		return null;
+	private Collection<WarframeResources> getResources(JsonElement element) {
+		Type collectionType = new TypeToken<Collection<WarframeResources>>() {}.getType();
+		return getCollectionFromJson(element, collectionType, "ExportResources", null);
 	}
 	
-	private Collection<WarframeUpgrades> getUpgrades(JsonElement elements) {
-		// TODO Auto-generated method stub
-		return null;
+	private Collection<WarframeUpgrades> getUpgrades(JsonElement element) {
+		Type collectionType = new TypeToken<Collection<WarframeUpgrades>>() {}.getType();
+		return getCollectionFromJson(element, collectionType, "ExportUpgrades", null);
 	}
 	
 	/**
-	 * 
+	 * Just seeing if the getX methods can be refactored into something more generic.
+	 * It might be cleaner to just handle each individual case in the respective 
+	 * methods.
 	 * @param element - JSON response prepared as a JsonElement
 	 * @param type - The type of collection that should be returned
 	 * @param elementIdentifier - The identifying value used by element

@@ -1,26 +1,3 @@
-<!-- <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-     xmlns:h="http://xmlns.jcp.org/jsf/html"
-     xmlns:f="http://xmlns.jcp.org/jsf/core"
-     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-     xmlns:p="http://primefaces.org/ui">
-
-    <h:head>
-        <title>Home</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <h:outputStylesheet name="title.css"/>
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"></link>
-        <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css"/>
-    </h:head>
-	
-    <h:body>
-    	<ui:include src="/pages/navbar.xhtml"/>
-        <h2>#{homeBean.home}</h2>
-    </h:body>      
-</html> -->
-
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
@@ -31,13 +8,12 @@
         <ui:define name="content">
             <div class="ui-grid ui-grid-responsive">
                 <div class="ui-grid-row">
-                    <div class="ui-grid-col-2" id="leftCol">
-                    	<h2>Some content in the lefthand column.</h2>
-                    </div>
-                    <div class="ui-grid-col-8" id="rightCol">
-                    	<h2>#{homeBean.home}</h2>
-                    </div>
+                    <pre>#{warframeBean.eventsPrettyPrint}</pre>
                 </div>
+                
+                <div class="ui-grid-row">
+					<pre>#{warframeBean.alertsPrettyPrent}</pre>
+				</div>
             </div>
         </ui:define>
     </ui:composition>

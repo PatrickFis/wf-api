@@ -2,40 +2,42 @@ package com.patrick.warframe.interceptors;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import com.patrick.warframe.annotations.Cached;
 
-@Cached
-@Interceptor
 /**
- * Caches collections used on the homepage. May need a way to periodically clear
- * the cache to remove old data. There are pre-built caching solutions,
- * I just wanted to write my own.
+ * Caches collections used by WarframeBean.
+ * 
+ * This originally just used a ConcurrentHashMap, but I'm trying Guava instead.
+ * https://github.com/google/guava/wiki/CachesExplained
+ * 
  * @author Patrick
  *
  */
+@Cached
+@Interceptor
 public class CachingInterceptor {
 
-	private static Map<Method, Collection> cache = new ConcurrentHashMap<>();
-
+	private static Cache<Method, Collection<?>> collectionCache = CacheBuilder.newBuilder()
+			.expireAfterWrite(5, TimeUnit.MINUTES).build();
+	
 	@AroundInvoke
 	public Object aroundInvoke(InvocationContext ic) throws Exception {
-		if(ic.getMethod().isAnnotationPresent(Cached.class)) {
-			if(cache.containsKey(ic.getMethod())) {
-				return cache.get(ic.getMethod());
-			} else {
-				cache.put(ic.getMethod(), (Collection) ic.proceed());
-				return cache.get(ic.getMethod());
+		return collectionCache.get(ic.getMethod(), new Callable<Collection<?>>() {
+			@Override
+			public Collection<?> call() throws Exception {
+				return (Collection<?>) ic.proceed();
 			}
-		}
-		
-		return ic.proceed();
+			
+		});
 	}
 
 }

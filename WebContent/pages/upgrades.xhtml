@@ -1,0 +1,17 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/templates/navbar.xhtml">
+        <ui:define name="title">Upgrades</ui:define>
+        <ui:define name="content">
+            <div class="ui-grid ui-grid-responsive">
+               	<h2>Upgrades</h2>
+                <div class="ui-grid-row">
+					<pre>#{warframeBean.upgradesPrettyPrint}</pre>
+				</div>
+            </div>
+        </ui:define>
+    </ui:composition>
+</html>

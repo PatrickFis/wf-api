@@ -2,6 +2,7 @@ package com.patrick.warframe.facade;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -15,7 +16,7 @@ import com.patrick.warframe.wikiexports.WarframeGear;
 import com.patrick.warframe.wikiexports.WarframeResources;
 import com.patrick.warframe.wikiexports.WarframeUpgrades;
 
-public class WarframeFacadeImpl implements WarframeFacade, Serializable {
+public class WarframeFacadeImpl<E> implements WarframeFacade, Serializable {
 
 	private static final long serialVersionUID = -5405959449441253182L;
 	
@@ -56,5 +57,15 @@ public class WarframeFacadeImpl implements WarframeFacade, Serializable {
 	@Cached
 	public Collection<WarframeUpgrades> getWarframeUpgrades() {
 		return warframeService.getWarframeUpgrades();
+	}
+
+	@Override
+	public Collection<WarframeAlert> getWarframeAlertsWithRewardNames() {
+		Collection<WarframeAlert> alerts = this.getWarframeAlerts();
+		alerts.forEach(alert -> {
+//			List<String> countedItems = alert.getMissionInfo().getMissionReward().getCountedItems();
+//			List<String> items = alert.getMissionInfo().getMissionReward().getItems();
+		});
+		return alerts;
 	}
 }

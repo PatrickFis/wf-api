@@ -14,6 +14,14 @@ public class LocalDateTimeHolder {
 		
 	}
 	
+	public LocalDateTime getDate() {
+		return date;
+	}
+
+	public void setDate(LocalDateTime date) {
+		this.date = date;
+	}
+
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this).append(date).toString();

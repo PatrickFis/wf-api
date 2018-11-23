@@ -24,6 +24,8 @@ import com.google.gson.JsonParser;
 import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
 import com.patrick.warframe.data.LocalDateTimeDeserializer;
+import com.patrick.warframe.data.MissionReward;
+import com.patrick.warframe.data.MissionRewardDeserializer;
 import com.patrick.warframe.data.WarframeAlert;
 import com.patrick.warframe.data.WarframeEvent;
 import com.patrick.warframe.enums.WarframeEndpoints;
@@ -131,6 +133,7 @@ public class WarframeServiceImpl implements WarframeService, Serializable {
 		Type collectionType = new TypeToken<Collection<WarframeAlert>>() {}.getType();
 		Map<Class, JsonDeserializer> deserializers = new HashMap<>();
 		deserializers.put(LocalDateTime.class, new LocalDateTimeDeserializer());
+		deserializers.put(MissionReward.class, new MissionRewardDeserializer());
 		return getCollectionFromJson(element, collectionType, "Alerts", deserializers);
 	}
 	

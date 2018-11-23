@@ -21,4 +21,6 @@ public interface WarframeFacade {
 	public Collection<WarframeResources> getWarframeResources();
 	
 	public Collection<WarframeUpgrades> getWarframeUpgrades();
+	
+	public Collection<WarframeAlert> getWarframeAlertsWithRewardNames();
 }

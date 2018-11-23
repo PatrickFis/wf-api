@@ -12,6 +12,14 @@ public class MissionTimer {
 		
 	}
 	
+	public LocalDateTimeHolder getLocalDate() {
+		return localDate;
+	}
+
+	public void setLocalDate(LocalDateTimeHolder localDate) {
+		this.localDate = localDate;
+	}
+
 	public String toString() {
 		return new ToStringBuilder(this).append(localDate).toString();
 	}

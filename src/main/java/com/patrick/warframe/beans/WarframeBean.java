@@ -16,19 +16,19 @@ import org.apache.commons.lang3.StringUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.patrick.warframe.data.EventMessage;
-import com.patrick.warframe.data.WarframeAlert;
-import com.patrick.warframe.data.WarframeEvent;
 import com.patrick.warframe.facade_interface.WarframeFacade;
-import com.patrick.warframe.weapons.WarframeWeapon;
+import com.patrick.warframe.wikiexports.WarframeAlert;
+import com.patrick.warframe.wikiexports.WarframeEvent;
 import com.patrick.warframe.wikiexports.WarframeGear;
 import com.patrick.warframe.wikiexports.WarframeResources;
 import com.patrick.warframe.wikiexports.WarframeUpgrades;
+import com.patrick.warframe.wikiexports.WarframeWeapon;
+import com.patrick.warframe.wikiexports.Warframes;
 
 @Named
 @SessionScoped
 public class WarframeBean implements Serializable {
 
-	// Homepage: http://localhost:8080/TodoApp/pages/home.xhtml
 	private static final long serialVersionUID = 4995937079175727797L;
 
 	public Collection<WarframeEvent> events;
@@ -37,6 +37,7 @@ public class WarframeBean implements Serializable {
 	private Collection<WarframeGear> gear;
 	private Collection<WarframeResources> resources;
 	private Collection<WarframeUpgrades> upgrades;
+	private Collection<Warframes> warframes;
 	
 	@Inject
 	private WarframeFacade warframeFacade;
@@ -49,6 +50,7 @@ public class WarframeBean implements Serializable {
 		gear = warframeFacade.getWarframeGear();
 		resources = warframeFacade.getWarframeResources();
 		upgrades = warframeFacade.getWarframeUpgrades();
+		warframes = warframeFacade.getWarframes();
 	}
 	
 	public Collection<WarframeEvent> getEvents() {
@@ -68,47 +70,48 @@ public class WarframeBean implements Serializable {
 	}
 
 	public String getEventsPrettyPrint() {
-		GsonBuilder builder = new GsonBuilder();
-		builder.setPrettyPrinting();
-		Gson gson = builder.create();
+		Gson gson = getPrettyPrintingGson();
 		return gson.toJson(filterEvents());
 	}
 	
 	public String getAlertsPrettyPrint() {
-		GsonBuilder builder = new GsonBuilder();
-		builder.setPrettyPrinting();
-		Gson gson = builder.create();
+		Gson gson = getPrettyPrintingGson();
 		return gson.toJson(alerts);
 	}
 	
 	public String getWeaponsPrettyPrint() {
-		GsonBuilder builder = new GsonBuilder();
-		builder.setPrettyPrinting();
-		Gson gson = builder.create();
+		Gson gson = getPrettyPrintingGson();
 		return gson.toJson(weapons);
 	}
 	
 	public String getGearPrettyPrint() {
-		GsonBuilder builder = new GsonBuilder();
-		builder.setPrettyPrinting();
-		Gson gson = builder.create();
+		Gson gson = getPrettyPrintingGson();
 		return gson.toJson(gear);
 	}
 	
 	public String getResourcesPrettyPrint() {
-		GsonBuilder builder = new GsonBuilder();
-		builder.setPrettyPrinting();
-		Gson gson = builder.create();
+		Gson gson = getPrettyPrintingGson();
 		return gson.toJson(resources);
 	}
+
 	
 	public String getUpgradesPrettyPrint() {
-		GsonBuilder builder = new GsonBuilder();
-		builder.setPrettyPrinting();
-		Gson gson = builder.create();
+		Gson gson = getPrettyPrintingGson();
 		return gson.toJson(upgrades);
 	}
 	
+	public String getWarframesPrettyPrint() {
+		Gson gson = getPrettyPrintingGson();
+		return gson.toJson(warframes);
+	}
+	
+	private Gson getPrettyPrintingGson() {
+		GsonBuilder builder = new GsonBuilder();
+		builder.setPrettyPrinting();
+		Gson gson = builder.create();
+		return gson;
+	}
+
 	private Collection<WarframeEvent> filterEvents() {
 		Collection<EventMessage> tempMessages = events.stream().map(WarframeEvent::getMessages).flatMap(List::stream)
 				.filter(mess -> StringUtils.equals(mess.getLanguageCode(), "en"))

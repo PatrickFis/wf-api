@@ -14,16 +14,17 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 
 import com.patrick.warframe.annotations.Cached;
-import com.patrick.warframe.data.WarframeAlert;
-import com.patrick.warframe.data.WarframeEvent;
 import com.patrick.warframe.facade_interface.WarframeFacade;
 import com.patrick.warframe.service_interface.WarframeService;
-import com.patrick.warframe.weapons.WarframeWeapon;
+import com.patrick.warframe.wikiexports.WarframeAlert;
+import com.patrick.warframe.wikiexports.WarframeEvent;
 import com.patrick.warframe.wikiexports.WarframeGear;
 import com.patrick.warframe.wikiexports.WarframeResources;
 import com.patrick.warframe.wikiexports.WarframeUpgrades;
+import com.patrick.warframe.wikiexports.WarframeWeapon;
+import com.patrick.warframe.wikiexports.Warframes;
 
-public class WarframeFacadeImpl<E> implements WarframeFacade, Serializable {
+public class WarframeFacadeImpl implements WarframeFacade, Serializable {
 
 	private static final long serialVersionUID = -5405959449441253182L;
 	
@@ -66,6 +67,12 @@ public class WarframeFacadeImpl<E> implements WarframeFacade, Serializable {
 		return warframeService.getWarframeUpgrades();
 	}
 
+	@Override
+	@Cached
+	public Collection<Warframes> getWarframes() {
+		return warframeService.getWarframes();
+	}
+	
 	@Override
 	@Cached
 	public Collection<WarframeAlert> getWarframeAlertsWithRewardNames() {

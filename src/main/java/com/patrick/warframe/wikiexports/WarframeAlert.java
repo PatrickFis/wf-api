@@ -1,8 +1,11 @@
-package com.patrick.warframe.data;
+package com.patrick.warframe.wikiexports;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.google.gson.annotations.SerializedName;
+import com.patrick.warframe.data.GenericID;
+import com.patrick.warframe.data.MissionInfo;
+import com.patrick.warframe.data.MissionTimer;
 
 public class WarframeAlert {
 	@SerializedName("_id")

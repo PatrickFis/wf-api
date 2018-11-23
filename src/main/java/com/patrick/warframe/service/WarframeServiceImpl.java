@@ -10,10 +10,10 @@ import java.net.URLConnection;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.google.gson.Gson;
@@ -23,17 +23,18 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
-import com.patrick.warframe.data.LocalDateTimeDeserializer;
 import com.patrick.warframe.data.MissionReward;
-import com.patrick.warframe.data.MissionRewardDeserializer;
-import com.patrick.warframe.data.WarframeAlert;
-import com.patrick.warframe.data.WarframeEvent;
+import com.patrick.warframe.deserializers.LocalDateTimeDeserializer;
+import com.patrick.warframe.deserializers.MissionRewardDeserializer;
 import com.patrick.warframe.enums.WarframeEndpoints;
 import com.patrick.warframe.service_interface.WarframeService;
-import com.patrick.warframe.weapons.WarframeWeapon;
+import com.patrick.warframe.wikiexports.WarframeAlert;
+import com.patrick.warframe.wikiexports.WarframeEvent;
 import com.patrick.warframe.wikiexports.WarframeGear;
 import com.patrick.warframe.wikiexports.WarframeResources;
 import com.patrick.warframe.wikiexports.WarframeUpgrades;
+import com.patrick.warframe.wikiexports.WarframeWeapon;
+import com.patrick.warframe.wikiexports.Warframes;
 
 public class WarframeServiceImpl implements WarframeService, Serializable {
 
@@ -83,6 +84,12 @@ public class WarframeServiceImpl implements WarframeService, Serializable {
 		return upgrades;
 	}
 
+	@Override
+	public Collection<Warframes> getWarframes() {
+		JsonElement elements = getResponseFromEndpoint(WarframeEndpoints.WARFRAMES.getEndpoint());
+		return getWarframes(elements);
+	}
+	
 	private JsonElement getResponseFromEndpoint(String endpoint) {
 		try {
 			URL warframeEndpoint = new URL(endpoint);
@@ -158,6 +165,11 @@ public class WarframeServiceImpl implements WarframeService, Serializable {
 		return getCollectionFromJson(element, collectionType, "ExportUpgrades", null);
 	}
 	
+	private Collection<Warframes> getWarframes(JsonElement element) {
+		Type collectionType = new TypeToken<Collection<Warframes>>() {}.getType();
+		return getCollectionFromJson(element, collectionType, "ExportWarframes", null);
+	}
+	
 	/**
 	 * Just seeing if the getX methods can be refactored into something more generic.
 	 * It might be cleaner to just handle each individual case in the respective 
@@ -170,7 +182,7 @@ public class WarframeServiceImpl implements WarframeService, Serializable {
 	 */
 	private Collection getCollectionFromJson(JsonElement element, Type type, String elementIdentifier, Map<Class, JsonDeserializer> optionalDeserializers) {
 		GsonBuilder builder = new GsonBuilder();
-		if(optionalDeserializers != null && optionalDeserializers.size() > 0) {
+		if(MapUtils.isNotEmpty(optionalDeserializers)) {
 			optionalDeserializers.forEach((T, U) -> {
 				builder.registerTypeAdapter(T, U);
 			});

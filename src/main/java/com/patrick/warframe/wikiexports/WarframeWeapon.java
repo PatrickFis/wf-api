@@ -1,4 +1,4 @@
-package com.patrick.warframe.weapons;
+package com.patrick.warframe.wikiexports;
 
 import java.util.Arrays;
 

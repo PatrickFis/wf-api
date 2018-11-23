@@ -1,4 +1,4 @@
-package com.patrick.warframe.data;
+package com.patrick.warframe.deserializers;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -13,6 +13,7 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.patrick.warframe.data.MissionReward;
 
 public class MissionRewardDeserializer implements JsonDeserializer<MissionReward> {
 	// Examples of mission rewards

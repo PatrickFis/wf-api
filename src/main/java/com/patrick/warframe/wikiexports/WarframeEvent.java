@@ -1,10 +1,13 @@
-package com.patrick.warframe.data;
+package com.patrick.warframe.wikiexports;
 
 import java.util.List;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.google.gson.annotations.SerializedName;
+import com.patrick.warframe.data.EventMessage;
+import com.patrick.warframe.data.GenericID;
+import com.patrick.warframe.data.MissionTimer;
 
 public class WarframeEvent {
 	@SerializedName("Prop")

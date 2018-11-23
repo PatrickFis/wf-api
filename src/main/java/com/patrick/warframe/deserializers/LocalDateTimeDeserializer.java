@@ -1,4 +1,4 @@
-package com.patrick.warframe.data;
+package com.patrick.warframe.deserializers;
 
 import java.lang.reflect.Type;
 import java.time.Instant;

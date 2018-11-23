@@ -1,22 +1,24 @@
 package com.patrick.warframe.data;
 
+import java.time.LocalDateTime;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.google.gson.annotations.SerializedName;
 
 public class MissionTimer {
 	@SerializedName("$date")
-	public LocalDateTimeHolder localDate;
+	public LocalDateTime localDate;
 	
 	public MissionTimer() {
 		
 	}
 	
-	public LocalDateTimeHolder getLocalDate() {
+	public LocalDateTime getLocalDate() {
 		return localDate;
 	}
 
-	public void setLocalDate(LocalDateTimeHolder localDate) {
+	public void setLocalDate(LocalDateTime localDate) {
 		this.localDate = localDate;
 	}
 

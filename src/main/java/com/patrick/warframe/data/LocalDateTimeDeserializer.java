@@ -15,7 +15,8 @@ public class LocalDateTimeDeserializer implements JsonDeserializer<LocalDateTime
 	@Override
 	public LocalDateTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 			throws JsonParseException {
-		return LocalDateTime.ofInstant(Instant.ofEpochMilli(json.getAsJsonPrimitive().getAsLong()), ZoneId.systemDefault());
+		long date = json.getAsJsonObject().get("$numberLong").getAsLong();
+		return LocalDateTime.ofInstant(Instant.ofEpochMilli(date), ZoneId.systemDefault());
 	}
 
 }

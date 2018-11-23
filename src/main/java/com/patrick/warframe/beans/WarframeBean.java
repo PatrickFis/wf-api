@@ -44,7 +44,7 @@ public class WarframeBean implements Serializable {
 	@PostConstruct
 	public void init() {
 		events = warframeFacade.getWarframeData();
-		alerts = warframeFacade.getWarframeAlerts();
+		alerts = warframeFacade.getWarframeAlertsWithRewardNames();
 		weapons = warframeFacade.getWarframeWeapons();
 		gear = warframeFacade.getWarframeGear();
 		resources = warframeFacade.getWarframeResources();

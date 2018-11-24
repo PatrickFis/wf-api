@@ -46,7 +46,9 @@ public class WarframeFacadeImpl implements WarframeFacade, Serializable {
 	@Override
 	@Cached
 	public Collection<WarframeWeapon> getWarframeWeapons() {
-		return warframeService.getWarframeWeapons();
+		Collection<WarframeWeapon> weapons = warframeService.getWarframeWeapons();
+//		getImagesForWeapons(weapons);
+		return weapons;
 	}
 
 	@Override
@@ -103,6 +105,10 @@ public class WarframeFacadeImpl implements WarframeFacade, Serializable {
 			alert.getMissionInfo().getMissionReward().setItems(itemsWithNames);
 		});
 		return alerts;
+	}
+
+	private void getImagesForWeapons(Collection<WarframeWeapon> weapons) {
+		weapons.forEach(ww -> ww.setImageLocation(warframeService.getImageForWeapon(ww)));
 	}
 	
 	/**

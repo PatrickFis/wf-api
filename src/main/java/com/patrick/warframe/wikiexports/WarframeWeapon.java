@@ -28,11 +28,30 @@ public class WarframeWeapon {
 	public boolean sentinel;
 	public int masteryReq;
 	public int omegaAttenuation;
+	public String imageLocation;
 	
 	public WarframeWeapon() {
 		
 	}
 
+	/**
+	 * @return A string representing a file name for an image for this weapon from a CDN.
+	 * The file name is the portion of the unique name after the final / in lower case.
+	 * Each previously capitalized letter aside from the first is preceded by a -.
+	 * ReplaceAll documentation from StackOverflow: https://stackoverflow.com/questions/23662527/replace-capital-letter-with-underscore-lowercase-letter-in-java
+	 * The file name can be used to retrieve images from https://cdn.warframestat.us/img/imageName.
+	 */
+	public String getImageFileName() {
+		String[] nameArray = uniqueName.split("/");
+		StringBuilder imageName = new StringBuilder(nameArray[nameArray.length - 1]);
+		imageName.setCharAt(0, Character.toLowerCase(imageName.charAt(0)));
+		return imageName.toString().replaceAll("([A-Z])", "-$1").toLowerCase() + ".png";
+	}
+	
+	public String getAlternateImageFileName() {
+		return name.replaceAll("\\s", "-").toLowerCase() + ".png";
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -231,6 +250,14 @@ public class WarframeWeapon {
 
 	public void setOmegaAttenuation(int omegaAttenuation) {
 		this.omegaAttenuation = omegaAttenuation;
+	}
+
+	public String getImageLocation() {
+		return imageLocation;
+	}
+
+	public void setImageLocation(String imageLocation) {
+		this.imageLocation = imageLocation;
 	}
 
 	@Override

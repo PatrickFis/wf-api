@@ -24,4 +24,6 @@ public interface WarframeService {
 	public Collection<WarframeUpgrades> getWarframeUpgrades();
 
 	public Collection<Warframes> getWarframes();
+
+	public String getImageForWeapon(WarframeWeapon weapon);
 }

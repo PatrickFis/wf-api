@@ -8,9 +8,28 @@
         <ui:define name="content">
             <div class="ui-grid ui-grid-responsive">
                 <h2>Weapons</h2>
-                <div class="ui-grid-row">
-					<pre>#{warframeBean.weaponsPrettyPrint}</pre>
-				</div>
+                <p:dataGrid value="#{warframeBean.weapons}" var="weapon" columns="3" paginator="true" rows="9" rowsPerPageTemplate="9,18,27">
+                	<p:panel header="#{weapon.name}" style="text-align:center">
+	                	<p:panelGrid columns="2">
+	                		<h:outputText value="Seconds per shot" />
+	                		<h:outputText value="#{weapon.secondsPerShot}" />
+	                		<h:outputText value="Magazine size" />
+	                		<h:outputText value="#{weapon.magazineSize}" />
+	                		<h:outputText value="Reload time" />
+	                		<h:outputText value="#{weapon.reloadTime}" />
+	                		<h:outputText value="Total damage" />
+	                		<h:outputText value="#{weapon.totalDamage}" />
+	                		<h:outputText value="DPS" />
+	                		<h:outputText value="#{weapon.damagePerSecond}" />
+	                		<h:outputText value="Critical chance" />
+	                		<h:outputText value="#{weapon.criticalChance}" />
+	                		<h:outputText value="Critical multiplier" />
+	                		<h:outputText value="#{weapon.criticalMultiplier}" />
+	                		<h:outputText value="Image" />
+	                		<p:graphicImage value="#{weapon.imageLocation}" />
+	                	</p:panelGrid>
+                	</p:panel>
+                </p:dataGrid>
             </div>
         </ui:define>
     </ui:composition>

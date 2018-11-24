@@ -1,7 +1,9 @@
 package com.patrick.warframe.service;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.lang.reflect.Type;
@@ -11,11 +13,14 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import com.google.common.io.ByteStreams;
+import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
@@ -90,6 +95,35 @@ public class WarframeServiceImpl implements WarframeService, Serializable {
 		return getWarframes(elements);
 	}
 	
+	@Override
+	public String getImageForWeapon(WarframeWeapon weapon) {
+		String image = getImage(weapon.getAlternateImageFileName());
+		if(StringUtils.isEmpty(image)) {
+			image = getImage(weapon.getImageFileName());
+		}
+		return image;
+	}
+	
+	private String getImage(String fileName) {
+		// https://stackoverflow.com/questions/9468045/reading-writing-a-text-file-in-a-servlet-where-should-this-file-be-stored-in-jb/
+		File jbossDataDirectory = new File(System.getProperty("jboss.server.data.dir"));
+		File imageFile = new File(jbossDataDirectory, fileName);
+
+		if (imageFile.exists()) {
+			return imageFile.getPath();
+		} else {
+			try (InputStream in = new URL("https://raw.githubusercontent.com/wfcd/warframe-items/development/data/img/"
+					+ fileName).openStream()) {
+				// Note: Files is from Guava
+				Files.write(ByteStreams.toByteArray(in), imageFile);
+				return imageFile.getPath().replaceAll("file:///", "https://");
+			} catch (IOException e) {
+				logger.log(Level.INFO, "Unable to save image file for weapon", e);
+				return null;
+			}
+		}
+	}
+	
 	private JsonElement getResponseFromEndpoint(String endpoint) {
 		try {
 			URL warframeEndpoint = new URL(endpoint);
@@ -132,11 +166,6 @@ public class WarframeServiceImpl implements WarframeService, Serializable {
 	}
 	
 	private Collection<WarframeAlert> getAlerts(JsonElement element) {
-//		GsonBuilder builder = new GsonBuilder();
-//		builder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeDeserializer());
-//		Gson gson = builder.create();
-//		Type collectionType = new TypeToken<Collection<WarframeAlert>>() {}.getType();
-//		return gson.fromJson(element.getAsJsonObject().get("Alerts"), collectionType);
 		Type collectionType = new TypeToken<Collection<WarframeAlert>>() {}.getType();
 		Map<Class, JsonDeserializer> deserializers = new HashMap<>();
 		deserializers.put(LocalDateTime.class, new LocalDateTimeDeserializer());

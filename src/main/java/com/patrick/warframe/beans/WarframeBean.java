@@ -4,10 +4,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
-import javax.faces.bean.SessionScoped;
+import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -31,9 +33,10 @@ public class WarframeBean implements Serializable {
 
 	private static final long serialVersionUID = 4995937079175727797L;
 
-	public Collection<WarframeEvent> events;
-	public Collection<WarframeAlert> alerts;
-	public Collection<WarframeWeapon> weapons;
+	// URL: http://localhost:8080/WarframeApi-0.0.1-SNAPSHOT/
+	private Collection<WarframeEvent> events;
+	private Collection<WarframeAlert> alerts;
+	private Collection<WarframeWeapon> weapons;
 	private Collection<WarframeGear> gear;
 	private Collection<WarframeResources> resources;
 	private Collection<WarframeUpgrades> upgrades;
@@ -53,22 +56,6 @@ public class WarframeBean implements Serializable {
 		warframes = warframeFacade.getWarframes();
 	}
 	
-	public Collection<WarframeEvent> getEvents() {
-		return events;
-	}
-	
-	public void setEvents(Collection<WarframeEvent> events) {
-		this.events = events;
-	}
-	
-	public Collection<WarframeAlert> getAlerts() {
-		return alerts;
-	}
-
-	public void setAlerts(Collection<WarframeAlert> alerts) {
-		this.alerts = alerts;
-	}
-
 	public String getEventsPrettyPrint() {
 		Gson gson = getPrettyPrintingGson();
 		return gson.toJson(filterEvents());
@@ -107,9 +94,7 @@ public class WarframeBean implements Serializable {
 	
 	private Gson getPrettyPrintingGson() {
 		GsonBuilder builder = new GsonBuilder();
-		builder.setPrettyPrinting();
-		Gson gson = builder.create();
-		return gson;
+		return builder.setPrettyPrinting().create();
 	}
 
 	private Collection<WarframeEvent> filterEvents() {
@@ -124,5 +109,61 @@ public class WarframeBean implements Serializable {
 			}
 		}
 		return retValue;
+	}
+
+	public Collection<WarframeEvent> getEvents() {
+		return events;
+	}
+	
+	public void setEvents(Collection<WarframeEvent> events) {
+		this.events = events;
+	}
+	
+	public Collection<WarframeAlert> getAlerts() {
+		return alerts;
+	}
+
+	public void setAlerts(Collection<WarframeAlert> alerts) {
+		this.alerts = alerts;
+	}
+	
+	public Collection<WarframeWeapon> getWeapons() {
+		return weapons;
+	}
+
+	public void setWeapons(Collection<WarframeWeapon> weapons) {
+		this.weapons = weapons;
+	}
+
+	public Collection<WarframeGear> getGear() {
+		return gear;
+	}
+
+	public void setGear(Collection<WarframeGear> gear) {
+		this.gear = gear;
+	}
+
+	public Collection<WarframeResources> getResources() {
+		return resources;
+	}
+
+	public void setResources(Collection<WarframeResources> resources) {
+		this.resources = resources;
+	}
+
+	public Collection<WarframeUpgrades> getUpgrades() {
+		return upgrades;
+	}
+
+	public void setUpgrades(Collection<WarframeUpgrades> upgrades) {
+		this.upgrades = upgrades;
+	}
+
+	public Collection<Warframes> getWarframes() {
+		return warframes;
+	}
+
+	public void setWarframes(Collection<Warframes> warframes) {
+		this.warframes = warframes;
 	}
 }

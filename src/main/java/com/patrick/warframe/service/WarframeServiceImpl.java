@@ -7,6 +7,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.lang.reflect.Type;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.time.LocalDateTime;
@@ -46,6 +48,8 @@ public class WarframeServiceImpl implements WarframeService, Serializable {
 	private static final long serialVersionUID = 6333759256496605333L;
 
 	private static final Logger logger = Logger.getLogger(WarframeServiceImpl.class.getName());
+	
+	private static final File jbossDataDirectory = new File(System.getProperty("jboss.server.data.dir"));
 	
 	@Override
 	public Collection<WarframeEvent> getWarframeEvents() {
@@ -97,30 +101,33 @@ public class WarframeServiceImpl implements WarframeService, Serializable {
 	
 	@Override
 	public String getImageForWeapon(WarframeWeapon weapon) {
-		String image = getImage(weapon.getAlternateImageFileName());
+		String image = getImage(weapon.getAlternateImageFileName(), true);
 		if(StringUtils.isEmpty(image)) {
-			image = getImage(weapon.getImageFileName());
+			image = getImage(weapon.getImageFileName(), true);
 		}
 		return image;
 	}
 	
-	private String getImage(String fileName) {
+	// Caching images locally to save bandwidth. There are some weapons that do not follow the naming convention
+	// of the other weapons, so their images are not shown.
+	private String getImage(String fileName, boolean skipFetchingNewImages) {
 		// https://stackoverflow.com/questions/9468045/reading-writing-a-text-file-in-a-servlet-where-should-this-file-be-stored-in-jb/
-		File jbossDataDirectory = new File(System.getProperty("jboss.server.data.dir"));
 		File imageFile = new File(jbossDataDirectory, fileName);
 
 		if (imageFile.exists()) {
-			return imageFile.getPath();
-		} else {
+//			return imageFile.getPath();
+			return "images/" + fileName;
+		} else if(!skipFetchingNewImages) {
 			try (InputStream in = new URL("https://raw.githubusercontent.com/wfcd/warframe-items/development/data/img/"
 					+ fileName).openStream()) {
 				// Note: Files is from Guava
 				Files.write(ByteStreams.toByteArray(in), imageFile);
-				return imageFile.getPath().replaceAll("file:///", "https://");
+				return "images/" + fileName;
 			} catch (IOException e) {
-				logger.log(Level.INFO, "Unable to save image file for weapon", e);
 				return null;
 			}
+		} else {
+			return null;
 		}
 	}
 	

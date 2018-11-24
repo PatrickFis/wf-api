@@ -47,7 +47,7 @@ public class WarframeFacadeImpl implements WarframeFacade, Serializable {
 	@Cached
 	public Collection<WarframeWeapon> getWarframeWeapons() {
 		Collection<WarframeWeapon> weapons = warframeService.getWarframeWeapons();
-//		getImagesForWeapons(weapons);
+		getImagesForWeapons(weapons);
 		return weapons;
 	}
 
@@ -108,7 +108,7 @@ public class WarframeFacadeImpl implements WarframeFacade, Serializable {
 	}
 
 	private void getImagesForWeapons(Collection<WarframeWeapon> weapons) {
-		weapons.forEach(ww -> ww.setImageLocation(warframeService.getImageForWeapon(ww)));
+		weapons.parallelStream().forEach(ww -> ww.setImageLocation(warframeService.getImageForWeapon(ww)));
 	}
 	
 	/**

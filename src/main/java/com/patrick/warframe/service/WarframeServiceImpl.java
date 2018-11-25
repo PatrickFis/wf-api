@@ -206,10 +206,11 @@ public class WarframeServiceImpl implements WarframeService, Serializable {
 	}
 	
 	private Collection<WarframeSolNodes> getWarframeSolNodes(JsonElement element) {
-		GsonBuilder builder = new GsonBuilder();
+		TypeToken<Collection<WarframeSolNodes>> typeToken = new TypeToken<Collection<WarframeSolNodes>>() {};
 		Type type = new TypeToken<Collection<WarframeSolNodes>>() {}.getType();
-		Gson gson = builder.registerTypeAdapter(type, new WarframeSolNodesDeserializer()).create();
-		return gson.fromJson(element, type);
+		Map<Class, JsonDeserializer> deserializers = new HashMap<>();
+		deserializers.put(typeToken.getRawType(), new WarframeSolNodesDeserializer());
+		return getCollectionFromJson(element, type, null, deserializers);
 	}
 	
 	/**

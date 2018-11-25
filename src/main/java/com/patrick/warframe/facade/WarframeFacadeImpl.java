@@ -12,8 +12,11 @@ import javax.inject.Inject;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.patrick.warframe.annotations.Cached;
+import com.patrick.warframe.enums.WarframeFactions;
+import com.patrick.warframe.enums.WarframeMissionTypes;
 import com.patrick.warframe.facade_interface.WarframeFacade;
 import com.patrick.warframe.service_interface.WarframeService;
 import com.patrick.warframe.wikiexports.WarframeAlert;
@@ -78,34 +81,8 @@ public class WarframeFacadeImpl implements WarframeFacade, Serializable {
 	
 	@Override
 	@Cached
-	public Collection<WarframeAlert> getWarframeAlertsWithRewardNames() {
-		Collection<WarframeAlert> alerts = this.getWarframeAlerts();
-		Map<String, String> itemNames = getWarframeItemNames();
-		alerts.forEach(alert -> {
-			Map<String, Integer> countedItems = alert.getMissionInfo().getMissionReward().getCountedItems();
-			Map<String, Integer> countedItemsWithNames = new HashMap<>();
-			
-			List<String> items = alert.getMissionInfo().getMissionReward().getItems();
-			List<String> itemsWithNames = new ArrayList<>();
-			
-			if(MapUtils.isNotEmpty(countedItems)) {
-				countedItems.forEach((name, count) -> {
-					// Get the actual item name from the itemNames map. If absent, put the name in the map.
-					countedItemsWithNames.put(itemNames.computeIfAbsent(name, n -> n), count);
-				});				
-			}
-			
-			if(CollectionUtils.isNotEmpty(items)) {
-				items.forEach((name) -> {
-					// Get the actual item name from the itemNames map. If absent, put the name in the map.
-					itemsWithNames.add(itemNames.computeIfAbsent(name, n -> n));
-				});				
-			}
-			
-			alert.getMissionInfo().getMissionReward().setCountedItems(countedItemsWithNames);
-			alert.getMissionInfo().getMissionReward().setItems(itemsWithNames);
-		});
-		return alerts;
+	public Collection<WarframeAlert> getUpdatedWarframeAlerts() {
+		return updateWarframeAlerts();
 	}
 
 	@Override
@@ -128,5 +105,57 @@ public class WarframeFacadeImpl implements WarframeFacade, Serializable {
 		itemNames.putAll(getWarframeResources().stream().collect(Collectors.toMap(WarframeResources::getUniqueName, WarframeResources::getName)));
 		itemNames.putAll(getWarframeUpgrades().stream().collect(Collectors.toMap(WarframeUpgrades::getUniqueName, WarframeUpgrades::getName)));
 		return itemNames;
+	}
+	
+	/**
+	 * Updates the location of the alert to a more readable value, updates the
+	 * mission type, updates the faction of the mission, and updates the item names
+	 * of rewards.
+	 * 
+	 * @return
+	 */
+	private Collection<WarframeAlert> updateWarframeAlerts() {
+		Collection<WarframeAlert> alerts = this.getWarframeAlerts();
+		Collection<WarframeSolNodes> solNodes = this.getWarframeSolNodes();
+		Map<String, String> itemNames = getWarframeItemNames();
+		
+		alerts.forEach(alert -> {
+			alert.getMissionInfo()
+					.setLocation(solNodes.stream().filter(node -> StringUtils
+							.equalsIgnoreCase(alert.getMissionInfo().getLocation(), node.getNodeId())).findFirst()
+							.orElseGet(WarframeSolNodes::new).getName());
+
+			alert.getMissionInfo()
+					.setMissionType(WarframeMissionTypes.getMissionName(alert.getMissionInfo().getMissionType()));
+
+			alert.getMissionInfo().setFaction(WarframeFactions.getFactionName(alert.getMissionInfo().getFaction()));
+			
+			Map<String, Integer> countedItems = alert.getMissionInfo().getMissionReward().getCountedItems();
+			Map<String, Integer> countedItemsWithNames = new HashMap<>();
+			
+			List<String> items = alert.getMissionInfo().getMissionReward().getItems();
+			List<String> itemsWithNames = new ArrayList<>();
+			
+			if(MapUtils.isNotEmpty(countedItems)) {
+				countedItems.forEach((name, count) -> {
+					// Get the actual item name from the itemNames map. If absent, put the name in the map.
+					countedItemsWithNames.put(itemNames.computeIfAbsent(name, n -> n), count);
+				});				
+			}
+			
+			if(CollectionUtils.isNotEmpty(items)) {
+				items.forEach((name) -> {
+					// Get the actual item name from the itemNames map. If absent, put the name in the map.
+					itemsWithNames.add(itemNames.computeIfAbsent(name, n -> n));
+				});				
+			}
+			
+			alert.getMissionInfo().getMissionReward().setCountedItems(countedItemsWithNames);
+			alert.getMissionInfo().getMissionReward().setItems(itemsWithNames);
+			
+			
+		});
+		
+		return alerts;
 	}
 }

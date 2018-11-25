@@ -8,7 +8,7 @@
         <ui:define name="content">
             <div class="ui-grid ui-grid-responsive">
                 <h2>Weapons</h2>
-                <p:dataGrid value="#{warframeBean.weapons}" var="weapon" columns="3" paginator="true" rows="9" rowsPerPageTemplate="9,18,27">
+                <p:dataGrid value="#{warframeWeaponsBean.weapons}" var="weapon" columns="3" paginator="true" rows="9" rowsPerPageTemplate="9,18,27">
                 	<p:panel header="#{weapon.name}" style="text-align:center">
 	                	<p:panelGrid columns="2">
 	                		<h:outputText value="Seconds per shot" />

@@ -35,7 +35,7 @@ public enum WarframeFactions {
 		this.factionName = factionName;
 	}
 
-	public String getFactionName(String code) {
+	public static String getFactionName(String code) {
 		EnumSet<WarframeFactions> set = EnumSet.allOf(WarframeFactions.class);
 		return set.stream().filter(faction -> StringUtils.equals(code, faction.getFactionCode())).findFirst()
 				.orElseThrow(IllegalArgumentException::new).getFactionName();

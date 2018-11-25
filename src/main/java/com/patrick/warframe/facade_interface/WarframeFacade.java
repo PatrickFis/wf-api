@@ -26,7 +26,7 @@ public interface WarframeFacade {
 	
 	public Collection<Warframes> getWarframes();
 
-	public Collection<WarframeAlert> getWarframeAlertsWithRewardNames();
+	public Collection<WarframeAlert> getUpdatedWarframeAlerts();
 
 	public Collection<WarframeSolNodes> getWarframeSolNodes();
 }

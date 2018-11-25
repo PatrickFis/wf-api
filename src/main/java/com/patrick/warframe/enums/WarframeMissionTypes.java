@@ -49,7 +49,7 @@ public enum WarframeMissionTypes {
 		this.missionName = missionName;
 	}
 
-	public String getFactionName(String code) {
+	public static String getMissionName(String code) {
 		EnumSet<WarframeMissionTypes> set = EnumSet.allOf(WarframeMissionTypes.class);
 		return set.stream().filter(mission -> StringUtils.equals(code, mission.getMissionCode())).findFirst()
 				.orElseThrow(IllegalArgumentException::new).getMissionName();

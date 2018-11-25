@@ -4,12 +4,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -23,6 +21,7 @@ import com.patrick.warframe.wikiexports.WarframeAlert;
 import com.patrick.warframe.wikiexports.WarframeEvent;
 import com.patrick.warframe.wikiexports.WarframeGear;
 import com.patrick.warframe.wikiexports.WarframeResources;
+import com.patrick.warframe.wikiexports.WarframeSolNodes;
 import com.patrick.warframe.wikiexports.WarframeUpgrades;
 import com.patrick.warframe.wikiexports.WarframeWeapon;
 import com.patrick.warframe.wikiexports.Warframes;
@@ -41,6 +40,7 @@ public class WarframeBean implements Serializable {
 	private Collection<WarframeResources> resources;
 	private Collection<WarframeUpgrades> upgrades;
 	private Collection<Warframes> warframes;
+	private Collection<WarframeSolNodes> solNodes;
 	
 	@Inject
 	private WarframeFacade warframeFacade;
@@ -54,6 +54,7 @@ public class WarframeBean implements Serializable {
 		resources = warframeFacade.getWarframeResources();
 		upgrades = warframeFacade.getWarframeUpgrades();
 		warframes = warframeFacade.getWarframes();
+		solNodes = warframeFacade.getWarframeSolNodes();
 	}
 	
 	public String getEventsPrettyPrint() {
@@ -109,6 +110,15 @@ public class WarframeBean implements Serializable {
 			}
 		}
 		return retValue;
+	}
+	
+	/**
+	 * This is for debug purposes
+	 * @return
+	 */
+	private Collection<WarframeWeapon> getWeaponsWithoutImages() {
+		return weapons.stream().filter(weapon -> StringUtils.isEmpty(weapon.imageLocation))
+				.collect(Collectors.toCollection(ArrayList::new));
 	}
 
 	public Collection<WarframeEvent> getEvents() {

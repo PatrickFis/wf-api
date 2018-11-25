@@ -7,15 +7,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.lang.reflect.Type;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.commons.collections4.MapUtils;
@@ -28,17 +25,18 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
 import com.patrick.warframe.data.MissionReward;
 import com.patrick.warframe.deserializers.LocalDateTimeDeserializer;
 import com.patrick.warframe.deserializers.MissionRewardDeserializer;
+import com.patrick.warframe.deserializers.WarframeSolNodesDeserializer;
 import com.patrick.warframe.enums.WarframeEndpoints;
 import com.patrick.warframe.service_interface.WarframeService;
 import com.patrick.warframe.wikiexports.WarframeAlert;
 import com.patrick.warframe.wikiexports.WarframeEvent;
 import com.patrick.warframe.wikiexports.WarframeGear;
 import com.patrick.warframe.wikiexports.WarframeResources;
+import com.patrick.warframe.wikiexports.WarframeSolNodes;
 import com.patrick.warframe.wikiexports.WarframeUpgrades;
 import com.patrick.warframe.wikiexports.WarframeWeapon;
 import com.patrick.warframe.wikiexports.Warframes;
@@ -67,8 +65,13 @@ public class WarframeServiceImpl implements WarframeService, Serializable {
 	
 	@Override
 	public Collection<WarframeWeapon> getWarframeWeapons() {
-		JsonElement elements = getResponseFromEndpoint(WarframeEndpoints.WEAPONS.getEndpoint());
-		Collection<WarframeWeapon> weapons = getWeapons(elements);
+//		JsonElement elements = getResponseFromEndpoint(WarframeEndpoints.WEAPONS.getEndpoint());
+//		Collection<WarframeWeapon> weapons = getWeapons(elements);
+//		JsonElement test = getResponseFromEndpoint(WarframeEndpoints.ALTERNATE_MELEE_WEAPONS.getEndpoint());
+		
+		Collection<WarframeWeapon> weapons = getWeapons(getResponseFromEndpoint(WarframeEndpoints.ALTERNATE_MELEE_WEAPONS.getEndpoint()));
+		weapons.addAll(getWeapons(getResponseFromEndpoint(WarframeEndpoints.ALTERNATE_PRIMARY_WEAPONS.getEndpoint())));
+		weapons.addAll(getWeapons(getResponseFromEndpoint(WarframeEndpoints.ALTERNATE_SECONDARY_WEAPONS.getEndpoint())));
 		return weapons;
 	}
 
@@ -100,10 +103,15 @@ public class WarframeServiceImpl implements WarframeService, Serializable {
 	}
 	
 	@Override
+	public Collection<WarframeSolNodes> getWarframeSolNodes() {
+		return getWarframeSolNodes(getResponseFromEndpoint(WarframeEndpoints.WORLDSTATE_SOL_NODES.getEndpoint()));
+	}
+	
+	@Override
 	public String getImageForWeapon(WarframeWeapon weapon) {
-		String image = getImage(weapon.getAlternateImageFileName(), true);
+		String image = getImage(weapon.getAlternateImageFileName(), false);
 		if(StringUtils.isEmpty(image)) {
-			image = getImage(weapon.getImageFileName(), true);
+			image = getImage(weapon.getImageFileName(), false);
 		}
 		return image;
 	}
@@ -115,7 +123,6 @@ public class WarframeServiceImpl implements WarframeService, Serializable {
 		File imageFile = new File(jbossDataDirectory, fileName);
 
 		if (imageFile.exists()) {
-//			return imageFile.getPath();
 			return "images/" + fileName;
 		} else if(!skipFetchingNewImages) {
 			try (InputStream in = new URL("https://raw.githubusercontent.com/wfcd/warframe-items/development/data/img/"
@@ -150,13 +157,6 @@ public class WarframeServiceImpl implements WarframeService, Serializable {
 			return null;
 		}
 	}
-	
-	// Trying multiple parsing methods
-	private LinkedTreeMap<String, String> getJsonAsMap(String response) {
-		GsonBuilder builder = new GsonBuilder();
-		Object jsonMap = builder.create().fromJson(response, Object.class);
-		return (LinkedTreeMap) jsonMap;
-	}
 
 	private JsonElement getJsonAsElement(String response) {
 		JsonParser jsonParser = new JsonParser();
@@ -181,9 +181,8 @@ public class WarframeServiceImpl implements WarframeService, Serializable {
 	}
 	
 	private Collection<WarframeWeapon> getWeapons(JsonElement element) {
-		Gson gson = new Gson();
 		Type collectionType = new TypeToken<Collection<WarframeWeapon>>() {}.getType();
-		return gson.fromJson(element.getAsJsonObject().get("ExportWeapons"), collectionType);
+		return getCollectionFromJson(element, collectionType, null, null);
 	}
 	
 	private Collection<WarframeGear> getGear(JsonElement element) {
@@ -206,6 +205,13 @@ public class WarframeServiceImpl implements WarframeService, Serializable {
 		return getCollectionFromJson(element, collectionType, "ExportWarframes", null);
 	}
 	
+	private Collection<WarframeSolNodes> getWarframeSolNodes(JsonElement element) {
+		GsonBuilder builder = new GsonBuilder();
+		Type type = new TypeToken<Collection<WarframeSolNodes>>() {}.getType();
+		Gson gson = builder.registerTypeAdapter(type, new WarframeSolNodesDeserializer()).create();
+		return gson.fromJson(element, type);
+	}
+	
 	/**
 	 * Just seeing if the getX methods can be refactored into something more generic.
 	 * It might be cleaner to just handle each individual case in the respective 
@@ -225,6 +231,16 @@ public class WarframeServiceImpl implements WarframeService, Serializable {
 		}
 
 		Gson gson = builder.create();
-		return gson.fromJson(element.getAsJsonObject().get(elementIdentifier), type);
+		
+		if(StringUtils.isNotEmpty(elementIdentifier)) {
+			return gson.fromJson(element.getAsJsonObject().get(elementIdentifier), type);			
+		} else {
+			// If an element identifier is not specified, then the alternate endpoints are being used
+			if(element.isJsonArray()) {
+				return gson.fromJson(element, type);
+			} else {
+				return gson.fromJson(element.getAsJsonObject(), type);
+			}
+		}
 	}
 }

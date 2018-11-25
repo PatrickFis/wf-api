@@ -73,6 +73,21 @@
             <artifactId>jboss-jsf-api_2.3_spec</artifactId>
             <scope>provided</scope>
         </dependency>
+        
+		<!--  jboss-logging API -->
+        <dependency>
+            <groupId>org.jboss.logging</groupId>
+            <artifactId>jboss-logging</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!--  These dependencies are the jboss-logging tools magic -->
+        <!--  the jboss-logging-tools processor  -->
+        <dependency>
+            <groupId>org.jboss.logging</groupId>
+            <artifactId>jboss-logging-processor</artifactId>
+            <scope>provided</scope>
+        </dependency>
 
         <!-- The third-party dependencies this application has -->
         <dependency>

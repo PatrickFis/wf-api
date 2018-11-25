@@ -20,6 +20,7 @@ import com.patrick.warframe.wikiexports.WarframeAlert;
 import com.patrick.warframe.wikiexports.WarframeEvent;
 import com.patrick.warframe.wikiexports.WarframeGear;
 import com.patrick.warframe.wikiexports.WarframeResources;
+import com.patrick.warframe.wikiexports.WarframeSolNodes;
 import com.patrick.warframe.wikiexports.WarframeUpgrades;
 import com.patrick.warframe.wikiexports.WarframeWeapon;
 import com.patrick.warframe.wikiexports.Warframes;
@@ -107,6 +108,12 @@ public class WarframeFacadeImpl implements WarframeFacade, Serializable {
 		return alerts;
 	}
 
+	@Override
+	@Cached
+	public Collection<WarframeSolNodes> getWarframeSolNodes() {
+		return warframeService.getWarframeSolNodes();
+	}
+	
 	private void getImagesForWeapons(Collection<WarframeWeapon> weapons) {
 		weapons.parallelStream().forEach(ww -> ww.setImageLocation(warframeService.getImageForWeapon(ww)));
 	}

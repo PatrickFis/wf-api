@@ -29,6 +29,7 @@ public class WarframeWeapon {
 	public int masteryReq;
 	public int omegaAttenuation;
 	public String imageLocation;
+	public String imageName;
 	
 	public WarframeWeapon() {
 		
@@ -40,16 +41,17 @@ public class WarframeWeapon {
 	 * Each previously capitalized letter aside from the first is preceded by a -.
 	 * ReplaceAll documentation from StackOverflow: https://stackoverflow.com/questions/23662527/replace-capital-letter-with-underscore-lowercase-letter-in-java
 	 * The file name can be used to retrieve images from https://cdn.warframestat.us/img/imageName.
+	 * 
 	 */
 	public String getImageFileName() {
 		String[] nameArray = uniqueName.split("/");
 		StringBuilder imageName = new StringBuilder(nameArray[nameArray.length - 1]);
 		imageName.setCharAt(0, Character.toLowerCase(imageName.charAt(0)));
-		return imageName.toString().replaceAll("([A-Z])", "-$1").toLowerCase() + ".png";
+		return imageName.toString().replaceAll("([A-Z])", "-$1").toLowerCase().replace("<archwing>-", "") + ".png";
 	}
 	
 	public String getAlternateImageFileName() {
-		return name.replaceAll("\\s", "-").toLowerCase() + ".png";
+		return name.replaceAll("\\s", "-").toLowerCase().replace("<archwing>-", "") + ".png";
 	}
 	
 	public String getName() {
@@ -258,6 +260,14 @@ public class WarframeWeapon {
 
 	public void setImageLocation(String imageLocation) {
 		this.imageLocation = imageLocation;
+	}
+
+	public String getImageName() {
+		return imageName;
+	}
+
+	public void setImageName(String imageName) {
+		this.imageName = imageName;
 	}
 
 	@Override

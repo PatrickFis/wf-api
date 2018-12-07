@@ -1,36 +1,44 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
-    <ui:composition template="/templates/navbar.xhtml">
-        <ui:define name="title">Weapons</ui:define>
-        <ui:define name="content">
-            <div class="ui-grid ui-grid-responsive">
-                <h2>Weapons</h2>
-                <p:dataGrid value="#{warframeWeaponsBean.weapons}" var="weapon" columns="3" paginator="true" rows="9" rowsPerPageTemplate="9,18,27">
-                	<p:panel header="#{weapon.name}" style="text-align:center">
-	                	<p:panelGrid columns="2">
-	                		<h:outputText value="Seconds per shot" />
-	                		<h:outputText value="#{weapon.secondsPerShot}" />
-	                		<h:outputText value="Magazine size" />
-	                		<h:outputText value="#{weapon.magazineSize}" />
-	                		<h:outputText value="Reload time" />
-	                		<h:outputText value="#{weapon.reloadTime}" />
-	                		<h:outputText value="Total damage" />
-	                		<h:outputText value="#{weapon.totalDamage}" />
-	                		<h:outputText value="DPS" />
-	                		<h:outputText value="#{weapon.damagePerSecond}" />
-	                		<h:outputText value="Critical chance" />
-	                		<h:outputText value="#{weapon.criticalChance}" />
-	                		<h:outputText value="Critical multiplier" />
-	                		<h:outputText value="#{weapon.criticalMultiplier}" />
-	                		<h:outputText value="Image" />
-	                		<p:graphicImage value="#{weapon.imageLocation}" />
-	                	</p:panelGrid>
-                	</p:panel>
-                </p:dataGrid>
-            </div>
-        </ui:define>
-    </ui:composition>
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/navbar.xhtml">
+	<ui:define name="title">Weapons</ui:define>
+	<ui:define name="content">
+		<h2>Weapons</h2>
+
+		<h:form>
+			<p:inputText id="weaponName" value="#{warframeWeaponsBean.searchObject.weaponName}" />
+
+			<p:commandButton value="Filter" id="filterButton"
+				action="#{warframeWeaponsBean.filter}" update="weaponsTable" />
+		</h:form>
+
+		<p:dataGrid value="#{warframeWeaponsBean.filteredWeapons}" var="weapon"
+			columns="3" paginator="true" rows="9" rowsPerPageTemplate="9,18,27"
+			id = "weaponsTable">
+			<p:panel header="#{weapon.name}" style="text-align:center">
+				<p:panelGrid columns="2">
+					<h:outputText value="Seconds per shot" />
+					<h:outputText value="#{weapon.secondsPerShot}" />
+					<h:outputText value="Magazine size" />
+					<h:outputText value="#{weapon.magazineSize}" />
+					<h:outputText value="Reload time" />
+					<h:outputText value="#{weapon.reloadTime}" />
+					<h:outputText value="Total damage" />
+					<h:outputText value="#{weapon.totalDamage}" />
+					<h:outputText value="DPS" />
+					<h:outputText value="#{weapon.damagePerSecond}" />
+					<h:outputText value="Critical chance" />
+					<h:outputText value="#{weapon.criticalChance}" />
+					<h:outputText value="Critical multiplier" />
+					<h:outputText value="#{weapon.criticalMultiplier}" />
+					<h:outputText value="Image" />
+					<p:graphicImage value="#{weapon.imageLocation}" />
+				</p:panelGrid>
+			</p:panel>
+		</p:dataGrid>
+	</ui:define>
+</ui:composition>
 </html>

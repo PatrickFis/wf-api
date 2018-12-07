@@ -26,6 +26,7 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
+import com.patrick.warframe.annotations.Logged;
 import com.patrick.warframe.data.MissionReward;
 import com.patrick.warframe.deserializers.LocalDateTimeDeserializer;
 import com.patrick.warframe.deserializers.MissionRewardDeserializer;
@@ -35,6 +36,7 @@ import com.patrick.warframe.service_interface.WarframeService;
 import com.patrick.warframe.wikiexports.WarframeAlert;
 import com.patrick.warframe.wikiexports.WarframeEvent;
 import com.patrick.warframe.wikiexports.WarframeGear;
+import com.patrick.warframe.wikiexports.WarframeItem;
 import com.patrick.warframe.wikiexports.WarframeResources;
 import com.patrick.warframe.wikiexports.WarframeSolNodes;
 import com.patrick.warframe.wikiexports.WarframeUpgrades;
@@ -76,6 +78,7 @@ public class WarframeServiceImpl implements WarframeService, Serializable {
 	}
 
 	@Override
+	@Logged
 	public Collection<WarframeGear> getWarframeGear() {
 		JsonElement elements = getResponseFromEndpoint(WarframeEndpoints.GEAR.getEndpoint());
 		Collection<WarframeGear> gear = getGear(elements);
@@ -83,6 +86,7 @@ public class WarframeServiceImpl implements WarframeService, Serializable {
 	}
 
 	@Override
+	@Logged
 	public Collection<WarframeResources> getWarframeResources() {
 		JsonElement elements = getResponseFromEndpoint(WarframeEndpoints.RESOURCES.getEndpoint());
 		Collection<WarframeResources> resources = getResources(elements);
@@ -90,6 +94,23 @@ public class WarframeServiceImpl implements WarframeService, Serializable {
 	}
 
 	@Override
+	@Logged
+	public Collection<WarframeItem> getWarframeMods() {
+		JsonElement elements = getResponseFromEndpoint(WarframeEndpoints.ALTERNATE_MODS.getEndpoint());
+		Collection<WarframeItem> mods = getItems(elements);
+		return mods;
+	}
+	
+	@Override
+	@Logged
+	public Collection<WarframeItem> getWarframeItems() {
+		JsonElement elements = getResponseFromEndpoint(WarframeEndpoints.ALTERNATE_MISC.getEndpoint());
+		Collection<WarframeItem> items = getItems(elements);
+		return items;
+	}
+	
+	@Override
+	@Logged
 	public Collection<WarframeUpgrades> getWarframeUpgrades() {
 		JsonElement elements = getResponseFromEndpoint(WarframeEndpoints.UPGRADES.getEndpoint());
 		Collection<WarframeUpgrades> upgrades = getUpgrades(elements);
@@ -193,6 +214,11 @@ public class WarframeServiceImpl implements WarframeService, Serializable {
 	private Collection<WarframeResources> getResources(JsonElement element) {
 		Type collectionType = new TypeToken<Collection<WarframeResources>>() {}.getType();
 		return getCollectionFromJson(element, collectionType, "ExportResources", null);
+	}
+	
+	private Collection<WarframeItem> getItems(JsonElement element) {
+		Type collectionType = new TypeToken<Collection<WarframeItem>>() {}.getType();
+		return getCollectionFromJson(element, collectionType, null, null);
 	}
 	
 	private Collection<WarframeUpgrades> getUpgrades(JsonElement element) {

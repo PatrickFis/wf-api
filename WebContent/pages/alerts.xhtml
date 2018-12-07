@@ -1,17 +1,27 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
-    <ui:composition template="/templates/navbar.xhtml">
-        <ui:define name="title">Alerts</ui:define>
-        <ui:define name="content">
-            <div class="ui-grid ui-grid-responsive">
-                <h2>Alerts</h2>
-                <div class="ui-grid-row">
-					<pre>#{warframeAlertsBean.alertsPrettyPrint}</pre>
-				</div>
-            </div>
-        </ui:define>
-    </ui:composition>
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/navbar.xhtml">
+	<ui:define name="title">Alerts</ui:define>
+	<ui:define name="content">
+		<p:dataGrid value="#{warframeAlertsBean.alerts}" var="alert"
+			columns="3" paginator="true" rows="9" rowsPerPageTemplate="9,18,27">
+			<p:panel header="#{alert.missionInfo.location}"
+				style="text-align:center">
+				<p:panelGrid columns="2">
+					<h:outputText value="Mission Type" />
+					<h:outputText value="#{alert.missionInfo.missionType}" />
+					<h:outputText value="Faction" />
+					<h:outputText value="#{alert.missionInfo.faction}" />
+					<h:outputText value="Level Range" />
+					<h:outputText value="#{alert.missionInfo.minEnemyLevel} - #{alert.missionInfo.maxEnemyLevel}" />
+					<h:outputText value="Reward" />
+					<h:outputText value="#{alert.missionInfo.missionReward.credits} Credits, Items: #{alert.missionInfo.missionReward.countedItems}, #{alert.missionInfo.missionReward.items}" />
+				</p:panelGrid>
+			</p:panel>
+		</p:dataGrid>
+	</ui:define>
+</ui:composition>
 </html>

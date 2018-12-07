@@ -5,6 +5,7 @@ import java.util.Collection;
 import com.patrick.warframe.wikiexports.WarframeAlert;
 import com.patrick.warframe.wikiexports.WarframeEvent;
 import com.patrick.warframe.wikiexports.WarframeGear;
+import com.patrick.warframe.wikiexports.WarframeItem;
 import com.patrick.warframe.wikiexports.WarframeResources;
 import com.patrick.warframe.wikiexports.WarframeSolNodes;
 import com.patrick.warframe.wikiexports.WarframeUpgrades;
@@ -22,6 +23,10 @@ public interface WarframeService {
 	
 	public Collection<WarframeResources> getWarframeResources();
 	
+	public Collection<WarframeItem> getWarframeMods();
+
+	public Collection<WarframeItem> getWarframeItems();
+
 	public Collection<WarframeUpgrades> getWarframeUpgrades();
 
 	public Collection<Warframes> getWarframes();
@@ -29,5 +34,7 @@ public interface WarframeService {
 	public Collection<WarframeSolNodes> getWarframeSolNodes();
 
 	public String getImageForWeapon(WarframeWeapon weapon);
+
+
 
 }

@@ -22,6 +22,7 @@ import com.patrick.warframe.service_interface.WarframeService;
 import com.patrick.warframe.wikiexports.WarframeAlert;
 import com.patrick.warframe.wikiexports.WarframeEvent;
 import com.patrick.warframe.wikiexports.WarframeGear;
+import com.patrick.warframe.wikiexports.WarframeItem;
 import com.patrick.warframe.wikiexports.WarframeResources;
 import com.patrick.warframe.wikiexports.WarframeSolNodes;
 import com.patrick.warframe.wikiexports.WarframeUpgrades;
@@ -69,6 +70,18 @@ public class WarframeFacadeImpl implements WarframeFacade, Serializable {
 
 	@Override
 	@Cached
+	public Collection<WarframeItem> getWarframeMods() {
+		return warframeService.getWarframeMods();
+	}
+	
+	@Override
+	@Cached
+	public Collection<WarframeItem> getWarframeItems() {
+		return warframeService.getWarframeItems();
+	}
+	
+	@Override
+	@Cached
 	public Collection<WarframeUpgrades> getWarframeUpgrades() {
 		return warframeService.getWarframeUpgrades();
 	}
@@ -104,6 +117,8 @@ public class WarframeFacadeImpl implements WarframeFacade, Serializable {
 		Map<String, String> itemNames = getWarframeGear().stream().collect(Collectors.toMap(WarframeGear::getUniqueName, WarframeGear::getName));
 		itemNames.putAll(getWarframeResources().stream().collect(Collectors.toMap(WarframeResources::getUniqueName, WarframeResources::getName)));
 		itemNames.putAll(getWarframeUpgrades().stream().collect(Collectors.toMap(WarframeUpgrades::getUniqueName, WarframeUpgrades::getName)));
+		itemNames.putAll(getWarframeMods().stream().collect(Collectors.toMap(WarframeItem::getUniqueName, WarframeItem::getName)));
+		itemNames.putAll(getWarframeItems().stream().collect(Collectors.toMap(WarframeItem::getUniqueName, WarframeItem::getName)));
 		return itemNames;
 	}
 	

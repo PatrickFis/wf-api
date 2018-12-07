@@ -10,7 +10,7 @@ public class MissionInfo {
 	public String enemySpec;
 	public String extraEnemySpec;
 	public int minEnemyLevel;
-	public int maxEnemeyLevel;
+	public int maxEnemyLevel;
 	public int difficulty;
 	public MissionReward missionReward;
 
@@ -74,12 +74,12 @@ public class MissionInfo {
 		this.minEnemyLevel = minEnemyLevel;
 	}
 
-	public int getMaxEnemeyLevel() {
-		return maxEnemeyLevel;
+	public int getMaxEnemyLevel() {
+		return maxEnemyLevel;
 	}
 
-	public void setMaxEnemeyLevel(int maxEnemeyLevel) {
-		this.maxEnemeyLevel = maxEnemeyLevel;
+	public void setMaxEnemyLevel(int maxEnemeyLevel) {
+		this.maxEnemyLevel = maxEnemeyLevel;
 	}
 
 	public int getDifficulty() {
@@ -101,7 +101,7 @@ public class MissionInfo {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this).append(missionType).append(faction).append(location).append(levelOverride)
-				.append(enemySpec).append(extraEnemySpec).append(minEnemyLevel).append(maxEnemeyLevel)
+				.append(enemySpec).append(extraEnemySpec).append(minEnemyLevel).append(maxEnemyLevel)
 				.append(difficulty).append(missionReward).toString();
 	}
 }

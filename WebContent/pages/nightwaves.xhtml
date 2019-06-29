@@ -1,0 +1,31 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/templates/navbar.xhtml">
+        <ui:define name="title">Nightwaves</ui:define>
+        <ui:define name="content">
+            <div class="ui-grid">
+                <h2>Nightwaves</h2>
+                <p:dataTable var="nightwave" value="#{warframeNightwaveBean.nightwaves.activeChallenges}" tableStyle="width:auto">
+                	<p:column headerText="Date">
+                		<h:outputText value="#{nightwave.startTime.localDate}" />
+                	</p:column>
+                	
+                	<p:column headerText="End Date">
+                		<h:outputText value="#{nightwave.endTime.localDate}" />
+                	</p:column>
+                	
+                	<p:column headerText="Daily">
+                		<h:outputText value="#{nightwave.daily}" />
+                	</p:column>
+                	
+                	<p:column headerText="Challenge">
+                		<h:outputText value="#{nightwave.challenge}" />
+                	</p:column>
+                </p:dataTable>
+            </div>
+        </ui:define>
+    </ui:composition>
+</html>

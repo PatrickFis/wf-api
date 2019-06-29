@@ -38,6 +38,7 @@ import com.patrick.warframe.wikiexports.WarframeEvent;
 import com.patrick.warframe.wikiexports.WarframeGear;
 import com.patrick.warframe.wikiexports.WarframeItem;
 import com.patrick.warframe.wikiexports.WarframeResources;
+import com.patrick.warframe.wikiexports.WarframeSeasonInfo;
 import com.patrick.warframe.wikiexports.WarframeSolNodes;
 import com.patrick.warframe.wikiexports.WarframeUpgrades;
 import com.patrick.warframe.wikiexports.WarframeWeapon;
@@ -63,6 +64,13 @@ public class WarframeServiceImpl implements WarframeService, Serializable {
 		JsonElement elements = getResponseFromEndpoint(WarframeEndpoints.WORLD_DATA.getEndpoint());
 		Collection<WarframeAlert> alerts = getAlerts(elements);
 		return alerts;
+	}
+	
+	@Override
+	public WarframeSeasonInfo getWarframeNightwaves() {
+		JsonElement elements = getResponseFromEndpoint(WarframeEndpoints.WORLD_DATA.getEndpoint());
+		WarframeSeasonInfo warframeSeasonInfo = getWarframeSeasonInfo(elements);
+		return warframeSeasonInfo;
 	}
 	
 	@Override
@@ -237,6 +245,14 @@ public class WarframeServiceImpl implements WarframeService, Serializable {
 		Map<Class, JsonDeserializer> deserializers = new HashMap<>();
 		deserializers.put(typeToken.getRawType(), new WarframeSolNodesDeserializer());
 		return getCollectionFromJson(element, type, null, deserializers);
+	}
+	
+	private WarframeSeasonInfo getWarframeSeasonInfo(JsonElement element) {
+		Type type = new TypeToken<WarframeSeasonInfo>() {}.getType();
+		GsonBuilder builder = new GsonBuilder();
+		builder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeDeserializer());
+		Gson gson = builder.create();
+		return gson.fromJson(element.getAsJsonObject().get("SeasonInfo"), type);
 	}
 	
 	/**

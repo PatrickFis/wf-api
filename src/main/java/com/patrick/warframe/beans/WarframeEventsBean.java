@@ -16,6 +16,7 @@ import com.google.gson.Gson;
 import com.patrick.warframe.data.EventMessage;
 import com.patrick.warframe.facade_interface.WarframeFacade;
 import com.patrick.warframe.wikiexports.WarframeEvent;
+import com.patrick.warframe.wikiexports.WarframeSeasonInfo;
 
 @Named
 @SessionScoped
